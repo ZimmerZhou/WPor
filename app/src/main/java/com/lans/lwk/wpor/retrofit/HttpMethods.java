@@ -1,5 +1,6 @@
 package com.lans.lwk.wpor.retrofit;
 
+import com.lans.lwk.wpor.model.entity.Bean;
 import com.lans.lwk.wpor.model.entity.CityId;
 import com.lans.lwk.wpor.model.entity.Forecast_WeatherInfo;
 import com.lans.lwk.wpor.model.entity.Real_Time_WeatherInfo;
@@ -15,6 +16,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
+
 /**
  * Created by Li on 2017/5/10.
  */
@@ -22,7 +24,7 @@ import rx.schedulers.Schedulers;
 public class HttpMethods {
 
     public static final String BASE_URL="https://api.caiyunapp.com/v2/8uupsJ1Zu4PurdDW/";
-    public static final String URL="https://weixin.jirengu.com/weather/cityid?location=";
+    public static final String URL="http://api.map.baidu.com/telematics/v3/";
 
     private static final int DEFAULT_TIMEOUT=5;
 
@@ -33,17 +35,11 @@ public class HttpMethods {
 
         OkHttpClient.Builder okbuilder=new OkHttpClient.Builder();
         okbuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-        retrofit=new Retrofit.Builder().client(okbuilder.build()).baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).build();
+        retrofit=new Retrofit.Builder().client(okbuilder.build()).baseUrl(URL).addConverterFactory(GsonConverterFactory.create()).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).build();
         api=retrofit.create(WeathRequest.class);
     }
 
-    private HttpMethods(String url){
 
-        OkHttpClient.Builder okbuilder=new OkHttpClient.Builder();
-        okbuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-        retrofit=new Retrofit.Builder().client(okbuilder.build()).baseUrl(url).addConverterFactory(GsonConverterFactory.create()).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).build();
-        api=retrofit.create(WeathRequest.class);
-    }
 
     public static HttpMethods GetInstance(){
         if(instance!=null){
@@ -56,12 +52,16 @@ public class HttpMethods {
         api.query(Longitude, Latitude).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 
-    public void Request_Forecast(String Longitude,String Latitude,Subscriber<Forecast_WeatherInfo> subscriber){
-        api.query_forest(Longitude, Latitude).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
+    public void Request_Forecast(String CityId,Subscriber<Bean> subscriber){
+        api.query_forest(CityId).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 
-    public void Request_FL(String Longitude,String Latitude,Subscriber<CityId> subscriber){
+    public void Request_ID(String Longitude,String Latitude,Subscriber<CityId> subscriber){
         api.query_ID(Longitude, Latitude).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
+    }
+
+    public void Request_BDW(String location,Subscriber<Bean> subscriber){
+        api.query_BD(location,"json","3vMLUnjui3DNrgYHtmB62uSlX7hTtV5V").subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 
 }

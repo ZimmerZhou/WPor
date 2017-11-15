@@ -21,6 +21,9 @@ public class Utils {
         this.context=context;
     }
 
+    /**
+     * 申请权限相关
+     */
     @TargetApi(23)
     public void getPersimmions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -68,6 +71,11 @@ public class Utils {
             return true;
         }
     }
+
+
+    /**
+     * 图标相关
+     */
 
 
 

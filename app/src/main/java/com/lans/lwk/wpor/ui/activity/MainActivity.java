@@ -3,9 +3,14 @@ package com.lans.lwk.wpor.ui.activity;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -14,6 +19,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.lans.lwk.wpor.LocationService;
 import com.lans.lwk.wpor.R;
@@ -24,16 +30,36 @@ import com.lans.lwk.wpor.retrofit.HttpMethods;
 import com.lans.lwk.wpor.ui.view.IMainActivityView;
 import com.lans.lwk.wpor.util.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rx.Subscriber;
 
-public class MainActivity extends AppCompatActivity implements IMainActivityView{
-    private TextView LocationResult,location,pm25;
+public class MainActivity extends AppCompatActivity implements IMainActivityView,View.OnClickListener{
+    private TextView LocationResult;
     private Button startLocation;
    // private String permissionInfo;
     private MainPresenter mainPresenter;
     private Utils utils;
+
+    @BindView(R.id.include_layout) View include_view;
+    @BindView(R.id.act_main_lin1) LinearLayout lin1;
+    @BindView(R.id.act_main_lin2) LinearLayout lin2;
+    @BindView(R.id.act_main_lin3) LinearLayout lin3;
+    @BindView(R.id.act_main_vp)  ViewPager viewPager;
+
+    @BindView(R.id.location) TextView location;
+    @BindView(R.id.pm25) TextView pm25;
+
+    @BindView(R.id.act_main_tv1) TextView tv1;
+    @BindView(R.id.act_main_tv2) TextView tv2;
+    @BindView(R.id.act_main_tv3) TextView tv3;
+
+    private TextView tvs[];
+    private List<Fragment> fragments=new ArrayList<>();
+    private MyPagerAdapter pagerAdapter;
 
 
     @Override
@@ -43,22 +69,13 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
 
         //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//去掉信息栏
         super.onCreate(savedInstanceState);
+
+
+        setContentView(R.layout.activity_main);
+//        startActivity(new Intent(MainActivity.this,Main2Activity.class));
+//        finish();
+        ButterKnife.bind(this);
         getSupportActionBar().hide();
-//        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            Window window = getWindow();
-//            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-//                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//            window.setStatusBarColor(Color.TRANSPARENT);
-//            window.setNavigationBarColor(Color.TRANSPARENT);
-//        }
-        setContentView(R.layout.location);
-
-
 
         initViews();
 
@@ -67,14 +84,74 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
 
 
     private void initViews(){
+        setTitle("定位中......");
       if(mainPresenter==null) mainPresenter=new MainPresenter(this);
         if(utils==null)utils=new Utils(this);
-        location=(TextView)findViewById(R.id.location);
-        LocationResult = (TextView) findViewById(R.id.textView1);
-        LocationResult.setMovementMethod(ScrollingMovementMethod.getInstance());
-        startLocation = (Button) findViewById(R.id.addfence);
-        pm25=(TextView)findViewById(R.id.pm25);
 
+       // LocationResult = (TextView) findViewById(R.id.textView1);
+      //  LocationResult.setMovementMethod(ScrollingMovementMethod.getInstance());
+      //  startLocation = (Button) findViewById(R.id.addfence);
+
+
+
+
+//        TextView tv1=(TextView)findViewById(R.id.act_main_tv1);
+//        TextView tv2=(TextView)findViewById(R.id.act_main_tv2);
+//        TextView tv3=(TextView)findViewById(R.id.act_main_tv3);
+
+        //viewPager=(ViewPager)findViewById(R.id.act_main_vp);
+        fragments.add(new Fragment1());
+        fragments.add(new Fragment2());
+        fragments.add(new Fragment3());
+
+        tvs=new TextView[]{tv1,tv2,tv3};
+
+        pagerAdapter=new MyPagerAdapter(getSupportFragmentManager());
+
+        viewPager.setAdapter(pagerAdapter);
+
+        viewPager.setOffscreenPageLimit(3);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                    setItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
+
+
+
+    }
+
+
+
+    /**
+     * 设置显示的页面
+     *
+     * @param index 下标
+     */
+    private void setItem(int index) {
+        for (int i = 0; i < 3; i++) {
+            if (i == index) {
+
+                tvs[i].setTextColor(Color.parseColor("#D74B25"));
+            } else {
+
+                tvs[i].setTextColor(Color.parseColor("#515151"));
+            }
+        }
     }
 
     /***
@@ -95,25 +172,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
         //获得权限
         utils.getPersimmions();
        // setLocation();
-        getWeatherInfo();
+       getWeatherInfo();
 
-        HttpMethods.GetInstance().Request_Forecast("121.6544", "25.1552", new Subscriber<Forecast_WeatherInfo>() {
-            @Override
-            public void onCompleted() {
 
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(Forecast_WeatherInfo weatherInfo) {
-             List<Forecast_WeatherInfo.ResultBean.HourlyBean.Pm25Bean> list= weatherInfo.getResult().getHourly().getPm25();
-                Log.i("TAG",weatherInfo.getStatus()+" "+list.get(0));
-            }
-        });
 
     }
 
@@ -146,5 +207,40 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
         mainPresenter.GetLocationAndWeatherInfo();
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.act_main_lin1:
+                setItem(0);
+                viewPager.setCurrentItem(0);
+                break;
+            case R.id.act_main_lin2:
+                setItem(1);
+                viewPager.setCurrentItem(1);
+                break;
+            case R.id.act_main_lin3:
+                setItem(2);
+                viewPager.setCurrentItem(2);
+                break;
+        }
+    }
+
+
+    class MyPagerAdapter extends FragmentPagerAdapter{
+
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+    }
 
 }

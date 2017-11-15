@@ -52,45 +52,45 @@
             android:layout_marginLeft="25dip"
             android:textSize="20dip"/>
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerInParent="true"
-    android:orientation="horizontal"
-    android:id="@+id/te"
-    android:background="@color/colorAccent">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            android:id="@+id/te"
+            android:background="@color/colorAccent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/temp"
-        android:text="7"
-        android:layout_centerInParent="true"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/temp"
+                android:text="7"
+                android:layout_centerInParent="true"
 
-        android:background="@color/colorGreen"
-        android:textColor="#FFFFFF"
+                android:background="@color/colorGreen"
+                android:textColor="#FFFFFF"
 
-        android:textSize="70dip"/>
+                android:textSize="70dip"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="10dp"
-        android:text="O"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="10dp"
+                android:text="O"
 
-        android:background="@color/colorPrimaryDark"
-
-
-
-
-
-        android:textColor="#FFFFFF"
-        android:textSize="20dip"/>
+                android:background="@color/colorPrimaryDark"
 
 
 
 
-</LinearLayout>
+
+                android:textColor="#FFFFFF"
+                android:textSize="20dip"/>
+
+
+
+
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_marginTop="20dp"
@@ -224,21 +224,21 @@
 
 
     <!--<RelativeLayout-->
-        <!--android:layout_below="@id/relalayout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="@color/colorAccent"-->
-        <!--android:layout_weight="2" >-->
+    <!--android:layout_below="@id/relalayout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@color/colorAccent"-->
+    <!--android:layout_weight="2" >-->
 
 
-     <!--<FrameLayout-->
-         <!--android:layout_width="match_parent"-->
-         <!--android:layout_height="match_parent"-->
-         <!--android:id="@+id/fragement">-->
+    <!--<FrameLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:id="@+id/fragement">-->
 
 
 
-     <!--</FrameLayout>-->
+    <!--</FrameLayout>-->
     <!---->
     <!--</RelativeLayout>-->
 
@@ -247,7 +247,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:orientation="vertical">
 
 
@@ -332,7 +332,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-       </LinearLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

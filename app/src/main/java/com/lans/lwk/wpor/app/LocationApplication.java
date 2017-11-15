@@ -7,6 +7,7 @@ import android.os.Vibrator;
 
 import com.lans.lwk.wpor.LocationService;
 
+import butterknife.ButterKnife;
 
 
 public class LocationApplication extends Application {

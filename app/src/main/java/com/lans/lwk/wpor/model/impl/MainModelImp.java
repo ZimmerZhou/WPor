@@ -12,6 +12,8 @@ import com.lans.lwk.wpor.LocationService;
 import com.lans.lwk.wpor.app.LocationApplication;
 import com.lans.lwk.wpor.model.IMainModel;
 import com.lans.lwk.wpor.model.OnLocationAndWeathListener;
+import com.lans.lwk.wpor.model.entity.Bean;
+import com.lans.lwk.wpor.model.entity.CityId;
 import com.lans.lwk.wpor.model.entity.City_Info;
 import com.lans.lwk.wpor.model.entity.Real_Time_WeatherInfo;
 import com.lans.lwk.wpor.retrofit.HttpMethods;
@@ -179,7 +181,7 @@ public class MainModelImp implements IMainModel {
 
 
     public void getLocationAndWeatherInfo(final City_Info city_info, final OnLocationAndWeathListener listener) {
-        Subscriber<Real_Time_WeatherInfo> sub =new Subscriber<Real_Time_WeatherInfo>() {
+        Subscriber<Bean> sub =new Subscriber<Bean>() {
          @Override
         public void onCompleted() {
 
@@ -191,13 +193,14 @@ public class MainModelImp implements IMainModel {
          }
 
       @Override
-      public void onNext(Real_Time_WeatherInfo news) {
-          Log.i("TAG", "onNext: "+city+"  "+news.getStatus()+news.getResult().getSkycon());
-          listener.Success(city_info,news);
+      public void onNext(Bean news) {
+          Log.i("TAG", "onNext: "+news.getDate()+news.getResults().get(0).getCurrentCity());
+
+
       }
   };
 
-        HttpMethods.GetInstance().Request(Longitude,Latitude,sub);
+        HttpMethods.GetInstance().Request_BDW(city_info.getCity(),sub);
     }
 
 

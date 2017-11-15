@@ -42,9 +42,9 @@ public class MainPresenter {
                 iMainModel.getWeatherInfo(new OnLocationAndWeathListener() {
                     @Override
                     public void Success(City_Info info, Real_Time_WeatherInfo weatherInfo) {
-                        Log.i("TAGGG",info.getCity()+" "+info.getDistrict()+info.getStreet()+" "+weatherInfo.getResult().getSkycon());
-                        iMainActivityView.setText(info.getDistrict()+" "+info.getStreet()+ info.getLocationDescribe().substring(1,info.getLocationDescribe().length()-2),1);
-                        iMainActivityView.setText("pm2.5:"+weatherInfo.getResult().getPm25()+"",2);
+                       // Log.i("TAGGG",info.getCity()+" "+info.getDistrict()+info.getStreet()+" "+weatherInfo.getResult().getSkycon());
+                       // iMainActivityView.setText(info.getDistrict()+" "+info.getStreet()+ info.getLocationDescribe().substring(1,info.getLocationDescribe().length()-2),1);
+                        //iMainActivityView.setText("pm2.5:"+weatherInfo.getResult().getPm25()+"",2);
                     }
 
                     @Override
