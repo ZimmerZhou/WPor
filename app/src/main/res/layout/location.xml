@@ -106,6 +106,7 @@
                 android:text="晴朗"
                 android:layout_toLeftOf="@+id/black"
                 android:layout_marginRight="5dp"
+                android:id="@+id/Skycon"
 
                 />
             <TextView
@@ -147,6 +148,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
+                        android:id="@+id/feng"
                         android:background="@color/colorAccent"
 
                         android:text="HELLO"/>
@@ -181,6 +183,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:background="@color/colorAccent"
+                        android:id="@+id/humidity"
 
                         android:text="HELLO"/>
 
@@ -207,7 +210,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:id="@+id/aqi"
                     android:background="@color/colorAccent"
 
                     android:text="HELLO"/>
@@ -246,7 +249,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
+
         android:layout_weight="2"
         android:orientation="vertical">
 
@@ -273,7 +276,7 @@
                     android:layout_width="wrap_content"
                     android:gravity="center"
                     android:layout_height="wrap_content"
-                    android:text="推荐"/>
+                    android:text="温度"/>
 
 
             </LinearLayout>
@@ -292,7 +295,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
                     android:gravity="center"
-                    android:text="发现"/>
+                    android:text="预报"/>
 
 
 

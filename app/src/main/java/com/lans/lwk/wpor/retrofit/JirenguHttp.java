@@ -1,6 +1,7 @@
 package com.lans.lwk.wpor.retrofit;
 
 import com.lans.lwk.wpor.model.entity.Forecast_WeatherInfo;
+import com.lans.lwk.wpor.model.entity.JiRenBean;
 import com.lans.lwk.wpor.model.entity.Real_Time_WeatherInfo;
 
 import java.util.concurrent.TimeUnit;
@@ -18,17 +19,16 @@ import rx.schedulers.Schedulers;
  * Created by Li on 2017/5/10.
  */
 
-public class HttpMethods {
-
-    public static final String BASE_URL="https://api.caiyunapp.com/v2/8uupsJ1Zu4PurdDW/";
+public class JirenguHttp {
+//https://weixin.jirengu.com/weather/now?cityid=WX4FBXXFKE4F
+    public static final String BASE_URL="https://weixin.jirengu.com/weather/";
 
     private static final int DEFAULT_TIMEOUT=5;
 
-    private static final HttpMethods instance=null;
-    private static final HttpMethods instanceCY=null;
+    private static final JirenguHttp instance=null;
     private WeathRequest api;
     private Retrofit retrofit;
-    private HttpMethods(){
+    private JirenguHttp(){
         OkHttpClient.Builder okbuilder=new OkHttpClient.Builder();
         okbuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         retrofit=new Retrofit.Builder().client(okbuilder.build()).baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).build();
@@ -38,23 +38,21 @@ public class HttpMethods {
 
 
 
-    public static HttpMethods GetInstance(){
+    public static JirenguHttp GetInstance(){
 
-                if(instance!=null){
-                    return instance;
-                }
-                return new HttpMethods();
+        if(instance!=null){
+            return instance;
+        }
+        return new JirenguHttp();
 
 
     }
 
-    public void Request(String Longitude,String Latitude,Subscriber<Real_Time_WeatherInfo> subscriber){
-        api.query(Longitude, Latitude).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
+    public void RequestJiRen(String cityid,Subscriber<JiRenBean> subscriber){
+        api.query_JiRen(cityid).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 
-    public void Request_Forecast(String Longitude,String Latitude,Subscriber<Forecast_WeatherInfo> subscriber){
-        api.Query_Forest(Longitude,Latitude).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
-    }
+
 
 
 

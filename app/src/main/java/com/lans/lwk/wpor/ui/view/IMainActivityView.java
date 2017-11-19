@@ -2,6 +2,9 @@ package com.lans.lwk.wpor.ui.view;
 
 import com.lans.lwk.wpor.model.entity.City_Info;
 import com.lans.lwk.wpor.model.entity.Real_Time_WeatherInfo;
+import com.lans.lwk.wpor.ui.activity.Forc_Detail_Activity;
+import com.lans.lwk.wpor.ui.activity.Fragment2;
+import com.lans.lwk.wpor.ui.activity.TempLChar;
 
 import java.util.List;
 
@@ -20,4 +23,14 @@ public interface IMainActivityView {
 
     //得到实时天气信息
     void getWeatherInfo();
+
+    //得到温度fragement
+    TempLChar GetTempLChar();
+    //得到预报fragement
+    Fragment2 GetForcast();
+
+    //得到当前位置
+    void GetLocation();
+
+
 }

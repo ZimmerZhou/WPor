@@ -35,16 +35,15 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.http.GET;
 import rx.Subscriber;
 
 public class MainActivity extends AppCompatActivity implements IMainActivityView,View.OnClickListener{
     private TextView LocationResult;
     private Button startLocation;
-   // private String permissionInfo;
     private MainPresenter mainPresenter;
     private Utils utils;
 
-    @BindView(R.id.include_layout) View include_view;
     @BindView(R.id.act_main_lin1) LinearLayout lin1;
     @BindView(R.id.act_main_lin2) LinearLayout lin2;
     @BindView(R.id.act_main_lin3) LinearLayout lin3;
@@ -56,7 +55,14 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
     @BindView(R.id.act_main_tv1) TextView tv1;
     @BindView(R.id.act_main_tv2) TextView tv2;
     @BindView(R.id.act_main_tv3) TextView tv3;
+    @BindView(R.id.temp) TextView temp;
+    @BindView(R.id.Skycon) TextView Skycon;
+    @BindView(R.id.feng) TextView feng;
+    @BindView(R.id.humidity) TextView humidity;
+    @BindView(R.id.aqi) TextView aqi;
 
+    TempLChar tempLChar;
+    Fragment2 forcast;
     private TextView tvs[];
     private List<Fragment> fragments=new ArrayList<>();
     private MyPagerAdapter pagerAdapter;
@@ -71,9 +77,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
         super.onCreate(savedInstanceState);
 
 
-        setContentView(R.layout.activity_main);
-//        startActivity(new Intent(MainActivity.this,Main2Activity.class));
-//        finish();
+        setContentView(R.layout.location);
         ButterKnife.bind(this);
         getSupportActionBar().hide();
 
@@ -100,8 +104,8 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
 //        TextView tv3=(TextView)findViewById(R.id.act_main_tv3);
 
         //viewPager=(ViewPager)findViewById(R.id.act_main_vp);
-        fragments.add(new Fragment1());
-        fragments.add(new Fragment2());
+        fragments.add(tempLChar=new TempLChar());
+        fragments.add(forcast=new Fragment2());
         fragments.add(new Fragment3());
 
         tvs=new TextView[]{tv1,tv2,tv3};
@@ -172,8 +176,8 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
         //获得权限
         utils.getPersimmions();
        // setLocation();
-       getWeatherInfo();
-
+       //getWeatherInfo();
+        GetLocation();
 
 
     }
@@ -193,6 +197,16 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
                 location.setText(text); break;
             case 2:
                 pm25.setText(text); break;
+            case 3:
+                temp.setText(text); break;
+            case 4:
+            Skycon.setText(text); break;
+            case 5:
+                feng.setText(text); break;
+            case 6:
+                humidity.setText(text); break;
+            case 7:
+                aqi.setText(text); break;
         }
 
     }
@@ -204,7 +218,22 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
 
     @Override
     public void getWeatherInfo() {
-        mainPresenter.GetLocationAndWeatherInfo();
+
+    }
+
+    @Override
+    public TempLChar GetTempLChar() {
+        return tempLChar;
+    }
+
+    @Override
+    public Fragment2 GetForcast() {
+        return forcast;
+    }
+
+    @Override
+    public void GetLocation() {
+        mainPresenter.GetLocation();
     }
 
     @Override

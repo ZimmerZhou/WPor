@@ -1,8 +1,5 @@
 package com.lans.lwk.wpor.model.impl;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 
 import com.baidu.location.BDAbstractLocationListener;
@@ -11,12 +8,15 @@ import com.baidu.location.Poi;
 import com.lans.lwk.wpor.LocationService;
 import com.lans.lwk.wpor.app.LocationApplication;
 import com.lans.lwk.wpor.model.IMainModel;
-import com.lans.lwk.wpor.model.OnLocationAndWeathListener;
-import com.lans.lwk.wpor.model.entity.Bean;
+import com.lans.lwk.wpor.model.OnRealTimeWeathListener;
 import com.lans.lwk.wpor.model.entity.CityId;
 import com.lans.lwk.wpor.model.entity.City_Info;
+import com.lans.lwk.wpor.model.entity.Forecast_WeatherInfo;
+import com.lans.lwk.wpor.model.entity.JiRenBean;
 import com.lans.lwk.wpor.model.entity.Real_Time_WeatherInfo;
 import com.lans.lwk.wpor.retrofit.HttpMethods;
+import com.lans.lwk.wpor.retrofit.JirenguHttp;
+import com.lans.lwk.wpor.retrofit.ZhiXinHttp;
 
 import rx.Subscriber;
 
@@ -26,29 +26,31 @@ import rx.Subscriber;
 
 public class MainModelImp implements IMainModel {
     private LocationService locationService;
-    private OnLocationAndWeathListener locationListener;
+    private OnLocationListener onLocationListener;
+    private OnRealTimeWeathListener locationListener;
     private String Longitude,Latitude,city;
-    @Override
-    public void getWeatherInfo(final OnLocationAndWeathListener locationListener) {
-        // -----------location config ------------
+    private City_Info city_info;
+
+
+
+    public void GetLocation(final OnLocationListener onLocationListener){
         this.locationListener=locationListener;
         //获取locationservice实例
         locationService = LocationApplication.getLocationSer();
         //注册位置监听器
         locationService.registerListener(mListener);
-
-        int type = 0;
-        if (type == 0) {
-            locationService.setLocationOption(locationService.getDefaultLocationClientOption());
-        } else if (type == 1) {
-            locationService.setLocationOption(locationService.getOption());
-        }
-                     // start之后会默认发起一次定位请求
-                    locationService.start();// 定位SDK
-
-                   // locationService.stop();
+        locationService.setLocationOption(locationService.getDefaultLocationClientOption());
+        // start之后会默认发起一次定位请求
+        locationService.start();// 定位SDK
+        // locationService.stop();
+        this.onLocationListener=onLocationListener;
 
     }
+
+
+
+
+
 
     @Override
     public void unregisterListener() {
@@ -157,18 +159,10 @@ public class MainModelImp implements IMainModel {
                 }
                 Log.i("GG",location.getAddrStr()+"  "+location.getLocationDescribe());
 
-                Message message=new Message();
-                message.what=1;
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        getLocationAndWeatherInfo(new City_Info(location.getLongitude()+"",location.getLatitude()+"",location.getCity(),location.getDistrict()
-                        ,location.getStreet(),location.getLocationDescribe()),locationListener);
-                       // locationListener.LocationSuccess(sb.toString());
-                    }
-                });
-
-
+                city_info=new City_Info(location.getLongitude()+"",location.getLatitude()+"",location.getCity(),location.getDistrict()
+                        ,location.getStreet(),location.getLocationDescribe());
+                onLocationListener.Success(city_info);
+                locationService.stop();
             }else{
                 locationListener.failed("定位失败");
             }
@@ -179,30 +173,91 @@ public class MainModelImp implements IMainModel {
 
 
 
+    @Override
+    public void getRealTimeWeatherInfo(final OnRealTimeWeathListener listener) {
+        HttpMethods.GetInstance().Request(city_info.getLongitude(), city_info.getLatitude(), new Subscriber<Real_Time_WeatherInfo>() {
+            @Override
+            public void onCompleted() {
 
-    public void getLocationAndWeatherInfo(final City_Info city_info, final OnLocationAndWeathListener listener) {
-        Subscriber<Bean> sub =new Subscriber<Bean>() {
-         @Override
-        public void onCompleted() {
+            }
 
-          }
+            @Override
+            public void onError(Throwable e) {
 
-         @Override
-        public void onError(Throwable e) {
-            listener.failed("定位失败");
-         }
+            }
 
-      @Override
-      public void onNext(Bean news) {
-          Log.i("TAG", "onNext: "+news.getDate()+news.getResults().get(0).getCurrentCity());
+            @Override
+            public void onNext(Real_Time_WeatherInfo weatherInfo) {
+                listener.Success(weatherInfo);
+            }
+        });
+     locationService.stop();
 
 
-      }
-  };
-
-        HttpMethods.GetInstance().Request_BDW(city_info.getCity(),sub);
     }
 
+    @Override
+    public void GetTempInfo(String Longitude,String Latitude,final OnForWeatherListener listener) {
+        HttpMethods.GetInstance().Request_Forecast(Longitude,Latitude, new Subscriber<Forecast_WeatherInfo>() {
+            @Override
+            public void onCompleted() {
 
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Forecast_WeatherInfo forecastWeatherInfo) {
+                Log.i("HAHA","onNext");
+                listener.Success(forecastWeatherInfo);
+            }
+        });
+    }
+
+    @Override
+    public void GetCityId(final String city, final OnCityIdListener listener) {
+        Log.i("HAHA",city+"2");
+        ZhiXinHttp.GetInstance().Request_BDW(city, new Subscriber<CityId>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(CityId cityId) {
+                Log.i("HAHA","29");
+                    listener.Success(cityId);
+            }
+        });
+
+    }
+
+    @Override
+    public void GetJirenWeather(String cityid, final OnJirenWeatherListener listener) {
+        JirenguHttp.GetInstance().RequestJiRen(cityid, new Subscriber<JiRenBean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(JiRenBean jiRenBean) {
+                listener.Success(jiRenBean);
+            }
+        });
+    }
 
 }

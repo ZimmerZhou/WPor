@@ -1,8 +1,8 @@
 package com.lans.lwk.wpor.retrofit;
 
-import com.lans.lwk.wpor.model.entity.Bean;
 import com.lans.lwk.wpor.model.entity.CityId;
 import com.lans.lwk.wpor.model.entity.Forecast_WeatherInfo;
+import com.lans.lwk.wpor.model.entity.JiRenBean;
 import com.lans.lwk.wpor.model.entity.Real_Time_WeatherInfo;
 
 import okhttp3.RequestBody;
@@ -27,13 +27,14 @@ public interface WeathRequest {
     Observable<Real_Time_WeatherInfo> query(@Path("Longitude") String Longitude,@Path("Latitude") String Latitude);
 
 
-    //https://api.caiyunapp.com/v2/TAkhjf8d1nlSlspN/121.6544,25.1552/forecast.json
-    @GET("now?cityid={CityId}")
-    Observable<Bean> query_forest(@Path("CityId") String CityId);
 
-    @GET("cityid?location={Longitude}:{Latitude}")
-    Observable<CityId> query_ID(@Query("Longitude") String Longitude, @Query("Latitude") String Latitude);
+    @GET("search.json")
+    Observable<CityId> query_CityId(@Query("key") String key,@Query("q") String q);
 
-    @GET("weather") //?location={location}&output=json&ak=3vMLUnjui3DNrgYHtmB62uSlX7hTtV5V
-    Observable<Bean> query_BD(@Query("location") String location,@Query("output") String json,@Query("ak") String ak);
+    @GET("now")
+    Observable<JiRenBean> query_JiRen(@Query("cityid") String cityid);
+
+   // https://api.caiyunapp.com/v2/TAkhjf8d1nlSlspN/121.6544,25.1552/forecast.json
+    @GET("{Longitude},{Latitude}/forecast.json")
+    Observable<Forecast_WeatherInfo>Query_Forest(@Path("Longitude") String Longitude,@Path("Latitude") String Latitude);
 }
