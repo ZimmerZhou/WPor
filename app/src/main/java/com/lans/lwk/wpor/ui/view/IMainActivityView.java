@@ -1,9 +1,11 @@
 package com.lans.lwk.wpor.ui.view;
 
+import com.lans.lwk.wpor.configs.MyView;
 import com.lans.lwk.wpor.model.entity.City_Info;
 import com.lans.lwk.wpor.model.entity.Real_Time_WeatherInfo;
 import com.lans.lwk.wpor.ui.activity.Forc_Detail_Activity;
 import com.lans.lwk.wpor.ui.activity.Fragment2;
+import com.lans.lwk.wpor.ui.activity.QualityFragement;
 import com.lans.lwk.wpor.ui.activity.TempLChar;
 
 import java.util.List;
@@ -14,9 +16,15 @@ import java.util.List;
 
 public interface IMainActivityView {
 
+    void setBackGround();
+
 
     //设置控件Text
-    void setText(final String text,int mode);
+    void setText(final String text,MyView mode);
+
+
+    void showDialog();
+    void hideDialog();
 
     //注销定位监听
     void unregisterListener();
@@ -28,6 +36,8 @@ public interface IMainActivityView {
     TempLChar GetTempLChar();
     //得到预报fragement
     Fragment2 GetForcast();
+
+    QualityFragement GetQualityFragement();
 
     //得到当前位置
     void GetLocation();

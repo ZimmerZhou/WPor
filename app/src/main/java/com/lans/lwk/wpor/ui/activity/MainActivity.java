@@ -3,6 +3,7 @@ package com.lans.lwk.wpor.ui.activity;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -20,10 +21,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.lans.lwk.wpor.LocationService;
 import com.lans.lwk.wpor.R;
 
+import com.lans.lwk.wpor.configs.MyView;
 import com.lans.lwk.wpor.model.entity.Forecast_WeatherInfo;
 import com.lans.lwk.wpor.presenter.MainPresenter;
 import com.lans.lwk.wpor.retrofit.HttpMethods;
@@ -43,14 +46,16 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
     private Button startLocation;
     private MainPresenter mainPresenter;
     private Utils utils;
+    private ProgressDialog dialog;
 
+    @BindView(R.id.relalayout) RelativeLayout relativeLayout;
     @BindView(R.id.act_main_lin1) LinearLayout lin1;
     @BindView(R.id.act_main_lin2) LinearLayout lin2;
     @BindView(R.id.act_main_lin3) LinearLayout lin3;
     @BindView(R.id.act_main_vp)  ViewPager viewPager;
 
     @BindView(R.id.location) TextView location;
-    @BindView(R.id.pm25) TextView pm25;
+    @BindView(R.id.aqilty) TextView aqilty;
 
     @BindView(R.id.act_main_tv1) TextView tv1;
     @BindView(R.id.act_main_tv2) TextView tv2;
@@ -63,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
 
     TempLChar tempLChar;
     Fragment2 forcast;
+    QualityFragement qualityFragement;
     private TextView tvs[];
     private List<Fragment> fragments=new ArrayList<>();
     private MyPagerAdapter pagerAdapter;
@@ -80,33 +86,27 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
         setContentView(R.layout.location);
         ButterKnife.bind(this);
         getSupportActionBar().hide();
-
         initViews();
-
+        showDialog();
 
     }
 
 
     private void initViews(){
-        setTitle("定位中......");
+        dialog=new ProgressDialog(this);
+        dialog.setTitle("提示");
+        dialog.setMessage("获取信息中");
+        dialog.setCancelable(false);
+
       if(mainPresenter==null) mainPresenter=new MainPresenter(this);
         if(utils==null)utils=new Utils(this);
 
-       // LocationResult = (TextView) findViewById(R.id.textView1);
-      //  LocationResult.setMovementMethod(ScrollingMovementMethod.getInstance());
-      //  startLocation = (Button) findViewById(R.id.addfence);
 
 
-
-
-//        TextView tv1=(TextView)findViewById(R.id.act_main_tv1);
-//        TextView tv2=(TextView)findViewById(R.id.act_main_tv2);
-//        TextView tv3=(TextView)findViewById(R.id.act_main_tv3);
-
-        //viewPager=(ViewPager)findViewById(R.id.act_main_vp);
         fragments.add(tempLChar=new TempLChar());
         fragments.add(forcast=new Fragment2());
-        fragments.add(new Fragment3());
+        fragments.add(qualityFragement=new QualityFragement());
+
 
         tvs=new TextView[]{tv1,tv2,tv3};
 
@@ -150,10 +150,10 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
         for (int i = 0; i < 3; i++) {
             if (i == index) {
 
-                tvs[i].setTextColor(Color.parseColor("#D74B25"));
+                tvs[i].setTextColor(Color.BLACK);
             } else {
 
-                tvs[i].setTextColor(Color.parseColor("#515151"));
+                tvs[i].setTextColor(Color.GRAY);
             }
         }
     }
@@ -189,26 +189,41 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
     }
 
 
+    @Override
+    public void setBackGround() {
+        relativeLayout.setBackgroundResource(R.drawable.weather2);
+    }
 
     @Override
-    public void setText(String text,int mode) {
+    public void setText(String text,MyView mode) {
         switch (mode){
-            case 1:
+            case LOCATION:
                 location.setText(text); break;
-            case 2:
-                pm25.setText(text); break;
-            case 3:
+            case PM25:
+                aqilty.setText(text); break;
+            case TEMPERATURE:
                 temp.setText(text); break;
-            case 4:
+            case WEATHER:
             Skycon.setText(text); break;
-            case 5:
+            case WIND_DIRECT:
                 feng.setText(text); break;
-            case 6:
+            case HUMIDITY:
                 humidity.setText(text); break;
-            case 7:
+            case AQI:
                 aqi.setText(text); break;
+
         }
 
+    }
+
+    @Override
+    public void showDialog() {
+        dialog.show();
+    }
+
+    @Override
+    public void hideDialog() {
+        dialog.hide();
     }
 
     @Override
@@ -229,6 +244,11 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
     @Override
     public Fragment2 GetForcast() {
         return forcast;
+    }
+
+    @Override
+    public QualityFragement GetQualityFragement() {
+        return qualityFragement;
     }
 
     @Override

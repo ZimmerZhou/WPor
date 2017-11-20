@@ -1,0 +1,229 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.lans.lwk.wpor.ui.activity.QualityFragement">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:id="@+id/tittle"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:textSize="15dp"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="AQI"
+           />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#888888" />
+
+
+
+        <TextView
+            android:textSize="15dp"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="PM25"
+           />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#888888" />
+
+        <TextView
+            android:textSize="15dp"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="PM10"
+          />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#888888" />
+
+        <TextView
+            android:textSize="15dp"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="SO2"
+            />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#888888" />
+
+        <TextView
+            android:textSize="15dp"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="NO2"
+           />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#888888" />
+
+        <TextView
+            android:textSize="15dp"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="CO"
+            />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#888888" />
+
+        <TextView
+            android:textSize="15dp"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="O3"
+            />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+
+        android:layout_below="@+id/tittle"
+        android:background="#888888" />
+
+<LinearLayout
+    android:layout_below="@+id/tittle"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/qualitys">
+
+    <TextView
+        android:textSize="15dp"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="hello"
+        android:id="@+id/aqi"/>
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#888888" />
+
+
+
+    <TextView
+        android:textSize="15dp"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="hello"
+        android:id="@+id/pm25"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#888888" />
+
+    <TextView
+        android:textSize="15dp"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="hello"
+        android:id="@+id/pm10"/>
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#888888" />
+
+    <TextView
+        android:textSize="15dp"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="hello"
+        android:id="@+id/so2"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#888888" />
+
+    <TextView
+        android:textSize="15dp"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+         android:layout_height="wrap_content"
+        android:text="hello"
+    android:id="@+id/no2"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#888888" />
+
+    <TextView
+        android:textSize="15dp"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="hello"
+        android:id="@+id/co"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#888888" />
+
+    <TextView
+        android:textSize="15dp"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="hello"
+        android:id="@+id/o3"/>
+</LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/line"
+        android:layout_below="@+id/qualitys"
+        android:background="#888888" />
+
+   <android.support.v7.widget.RecyclerView
+       android:layout_marginTop="8dp"
+       android:layout_below="@+id/line"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:id="@+id/recycle_view"
+       />
+</RelativeLayout>

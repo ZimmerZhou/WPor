@@ -10,47 +10,40 @@
         android:id="@+id/relalayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/clear_day"
-
-
+        android:background="@drawable/weather1"
         android:layout_weight="1.5">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/location"
             android:layout_alignBottom="@+id/location"
-
-            android:src="@drawable/location"/>
+            android:layout_marginLeft="10dp"
+            android:id="@+id/image_location"
+            android:src="@drawable/cur_location"/>
         <TextView
+            android:layout_toRightOf="@+id/image_location"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="20dip"
             android:id="@+id/location"
             android:layout_width="wrap_content"
             android:textColor="#FFFFFF"
             android:layout_height="wrap_content"
-            android:text="西安"
-            android:layout_marginLeft="25dip"
-
+            android:text="北京"
             android:textSize="15dip"/>
 
 
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/pm25"
-            android:layout_alignBottom="@+id/pm25"
-            android:src="@drawable/notification_pm_light_color"/>
 
         <TextView
-            android:id="@+id/pm25"
+            android:id="@+id/aqilty"
             android:layout_width="wrap_content"
             android:textColor="#FFFFFF"
             android:layout_height="wrap_content"
-            android:text="西安"
+            android:text="空气70 良好"
             android:layout_below="@+id/location"
             android:layout_marginTop="5dip"
-            android:layout_marginLeft="25dip"
-            android:textSize="20dip"/>
+           android:layout_alignLeft="@+id/location"
+            android:textSize="15dip"/>
 
 <LinearLayout
     android:layout_width="wrap_content"
@@ -58,7 +51,7 @@
     android:layout_centerInParent="true"
     android:orientation="horizontal"
     android:id="@+id/te"
-    android:background="@color/colorAccent">
+>
 
     <TextView
         android:layout_width="wrap_content"
@@ -67,7 +60,6 @@
         android:text="7"
         android:layout_centerInParent="true"
 
-        android:background="@color/colorGreen"
         android:textColor="#FFFFFF"
 
         android:textSize="70dip"/>
@@ -77,12 +69,6 @@
         android:layout_height="match_parent"
         android:paddingTop="10dp"
         android:text="O"
-
-        android:background="@color/colorPrimaryDark"
-
-
-
-
 
         android:textColor="#FFFFFF"
         android:textSize="20dip"/>
@@ -95,50 +81,54 @@
         <RelativeLayout
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:background="@color/colorGreen"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:id="@+id/wea"
             android:layout_below="@+id/te">
 
             <TextView
+                android:textColor="#FFFFFF"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="晴朗"
-                android:layout_toLeftOf="@+id/black"
-                android:layout_marginRight="5dp"
+
+                android:textSize="15dp"
+                android:layout_centerHorizontal="true"
+
                 android:id="@+id/Skycon"
 
                 />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:id="@+id/black"
+            <!--<TextView-->
+                <!--android:textColor="#FFFFFF"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerInParent="true"-->
+                <!--android:textSize="15dp"-->
+                <!--android:id="@+id/black"-->
 
-                android:text="/"/>
+                <!--android:text="/"/>-->
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_toRightOf="@+id/black"
-                android:text="东南风"/>
+            <!--<TextView-->
+                <!--android:textColor="#FFFFFF"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="15dp"-->
+                <!--android:layout_toRightOf="@+id/black"-->
+                <!--android:text="东南风"/>-->
 
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
-
             android:layout_below="@+id/wea">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
                 android:gravity="center"
+                android:layout_gravity="center"
                 android:layout_weight="1">
 
                 <RelativeLayout
@@ -149,16 +139,20 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:id="@+id/feng"
-                        android:background="@color/colorAccent"
+                        android:textColor="#FFFFFF"
+                        android:text="东南风"/>
 
-                        android:text="HELLO"/>
+
+
+
 
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="1dip"
-                        android:background="#888888" />
+                        android:layout_marginBottom="10dp"
+                        android:background="#FFFFFF" />
 
                 </RelativeLayout>
 
@@ -172,7 +166,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:background="@color/colorPrimary"
                 android:layout_weight="1">
 
                 <RelativeLayout
@@ -182,17 +175,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:background="@color/colorAccent"
+                        android:textColor="#FFFFFF"
                         android:id="@+id/humidity"
-
-                        android:text="HELLO"/>
+                        android:text="相对湿度"/>
 
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
                         android:layout_marginRight="1dip"
                         android:layout_alignParentRight="true"
-                        android:background="#888888" />
+                        android:layout_marginBottom="10dp"
+                        android:background="#FFFFFF" />
 
                 </RelativeLayout>
 
@@ -205,15 +198,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:background="@color/colorPrimary"
                 android:layout_weight="1">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/aqi"
-                    android:background="@color/colorAccent"
+                    android:textColor="#FFFFFF"
 
-                    android:text="HELLO"/>
+                    android:text="体感温度"/>
 
 
             </LinearLayout>
@@ -249,12 +241,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:id="@+id/bottomview"
         android:layout_weight="2"
         android:orientation="vertical">
-
-
-
 
 
         <LinearLayout
@@ -275,6 +264,7 @@
                     android:id="@+id/act_main_tv1"
                     android:layout_width="wrap_content"
                     android:gravity="center"
+
                     android:layout_height="wrap_content"
                     android:text="温度"/>
 
@@ -315,7 +305,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="我的"/>
+                    android:text="指数"/>
 
             </LinearLayout>
 

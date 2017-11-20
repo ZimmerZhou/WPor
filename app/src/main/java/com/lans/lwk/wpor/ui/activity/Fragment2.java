@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.lans.lwk.wpor.model.entity.JiRenBean;
 import com.lans.lwk.wpor.model.entity.Text;
 import com.lans.lwk.wpor.model.impl.OnJiRendatChangeListener;
 import com.lans.lwk.wpor.ui.view.ForcastView;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +38,7 @@ public class Fragment2 extends Fragment implements ForcastView{
     static String [] cheng={"0","0","0","0"};
     MyAdapter adapter;
     private JiRenBean beaninfo;
+    private static Context context;
 
 
     public Fragment2() {
@@ -46,6 +49,7 @@ public class Fragment2 extends Fragment implements ForcastView{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context=getContext();
 
     }
 
@@ -80,28 +84,17 @@ public class Fragment2 extends Fragment implements ForcastView{
     @Override
     public void SetDate(JiRenBean info) {
         beaninfo=info;
+    for(int i=0;i<3;i++){
+
+        timestring[i]=info.getWeather().get(0).getFuture().get(i).getDate().substring(5);
+
+        weather[i]=info.getWeather().get(0).getFuture().get(i).getText().replace("/","转");
 
 
-        timestring[0]=info.getWeather().get(0).getFuture().get(0).getDate().substring(5);
-        timestring[1]=info.getWeather().get(0).getFuture().get(1).getDate().substring(5);
-        timestring[2]=info.getWeather().get(0).getFuture().get(2).getDate().substring(5);
-        timestring[3]=info.getWeather().get(0).getFuture().get(3).getDate().substring(5);
+        temp[i]=info.getWeather().get(0).getFuture().get(i).getHigh()+"°/"+info.getWeather().get(0).getFuture().get(i).getLow()+"°";
 
-        weather[0]=info.getWeather().get(0).getFuture().get(0).getText();
-        weather[1]=info.getWeather().get(0).getFuture().get(1).getText();
-        weather[2]=info.getWeather().get(0).getFuture().get(2).getText();
-        weather[3]=info.getWeather().get(0).getFuture().get(3).getText();
-
-        temp[0]=info.getWeather().get(0).getFuture().get(0).getHigh()+"°/"+info.getWeather().get(0).getFuture().get(0).getLow()+"°";
-        temp[1]=info.getWeather().get(0).getFuture().get(1).getHigh()+"°/"+info.getWeather().get(0).getFuture().get(1).getLow()+"°";
-        temp[2]=info.getWeather().get(0).getFuture().get(2).getHigh()+"°/"+info.getWeather().get(0).getFuture().get(2).getLow()+"°";
-        temp[3]=info.getWeather().get(0).getFuture().get(3).getHigh()+"°/"+info.getWeather().get(0).getFuture().get(3).getLow()+"°";
-
-        cheng[0]=info.getWeather().get(0).getFuture().get(0).getWind();
-        cheng[1]=info.getWeather().get(0).getFuture().get(1).getWind();
-        cheng[2]=info.getWeather().get(0).getFuture().get(2).getWind();
-
-
+        cheng[i]=info.getWeather().get(0).getFuture().get(i).getWind();
+    }
          adapter.notifyDataSetChanged();
     }
 
@@ -133,11 +126,12 @@ public class Fragment2 extends Fragment implements ForcastView{
             TextView  chengdu=ButterKnife.findById(holder.itemView,R.id.chengdu);
             TextView  wendu=ButterKnife.findById(holder.itemView,R.id.wendu);
 
+
               time.setText(timestring[position]);
-            situ.setText(weather[position]);
-            wendu.setText(temp[position]);
+              situ.setText(weather[position]);
+              wendu.setText(temp[position]);
                 chengdu.setText(cheng[position]);
-//            holder.itemView.setBackgroundColor(Color.BLUE);
+
 
 
             if(listener!=null){

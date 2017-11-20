@@ -18,6 +18,6 @@
     android:layout_height="wrap_content"
     android:id="@+id/tmp_des"
     android:textSize="10dp"
-    android:text="提醒:今日温度偏低111111111111111111"/>
+    android:text="提醒"/>
 
 </RelativeLayout>

@@ -30,6 +30,8 @@ public class CharConfig {
         /**
          * 设置X 轴的显示
          */
+        mAxisXValues.clear();
+        mPointValues.clear();
         List<String> datelis= ConnverDat(points);
         for (int i = 0; i < 24; i++) {
             mAxisXValues.add(new AxisValue(i).setLabel(datelis.get(i)));

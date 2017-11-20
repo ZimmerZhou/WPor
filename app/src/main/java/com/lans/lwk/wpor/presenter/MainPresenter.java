@@ -2,6 +2,7 @@ package com.lans.lwk.wpor.presenter;
 
 import android.util.Log;
 
+import com.lans.lwk.wpor.configs.MyView;
 import com.lans.lwk.wpor.model.IMainModel;
 import com.lans.lwk.wpor.model.OnRealTimeWeathListener;
 import com.lans.lwk.wpor.model.entity.CityId;
@@ -53,8 +54,8 @@ public class MainPresenter {
                 iMainModel.getRealTimeWeatherInfo(new OnRealTimeWeathListener(){
                     @Override
                     public void Success(Real_Time_WeatherInfo weatherInfo) {
-                        iMainActivityView.setText(((int)(weatherInfo.getResult().getTemperature()))+"",3);
-                        iMainActivityView.setText("相对湿度\n"+"    "+((weatherInfo.getResult().getHumidity())*100)+"%",6);
+                        iMainActivityView.setText(((int)(weatherInfo.getResult().getTemperature()))+"",MyView.TEMPERATURE);
+
                       //  iMainActivityView.setText(weatherInfo.getResult().getSkycon(),4);
                     }
 
@@ -75,9 +76,9 @@ public class MainPresenter {
                 GetForcastWeatherInfo();
                 GetForcaseInfo(info);
                 GetCityId(info);
+                iMainActivityView.hideDialog();
 
-               // iMainActivityView.GetTempLChar().GetTempInfo(info.getLongitude(),info.getLatitude());
-                iMainActivityView.setText(info.getDistrict()+" "+info.getStreet(),1);
+                iMainActivityView.setText(info.getDistrict()+" "+info.getStreet(),MyView.LOCATION);
 
             }
 
@@ -95,30 +96,52 @@ public class MainPresenter {
         iMainModel.GetTempInfo(city_info.getLongitude(), city_info.getLatitude(), new OnForWeatherListener() {
             @Override
             public void Success(Forecast_WeatherInfo info) {
+                //将预报信息传给温度fragement
                 iMainActivityView.GetTempLChar().setDate(info);
-                iMainActivityView.setText("aqi\n"+info.getResult().getHourly().getAqi().get(0).getValue()+"",7);
+
+
                 //将预报信息传递给温度显示fragement
                 //iMainActivityView.GetForcast().SetDate(info);
+
+
             }
 
             @Override
             public void failed() {
-
             }
         });
     }
 
     public void GetJirenWeather(String cityid){
-        Log.i("HAHA",cityid+"999");
         iMainModel.GetJirenWeather(cityid, new OnJirenWeatherListener() {
             @Override
             public void Success(JiRenBean info) {
-                Log.i("HAHA",info.getWeather().get(0).getCity_name()+"999");
+               int code=Integer.parseInt(info.getWeather().get(0).getNow().getCode());
+                if(code>9 && code <21){
+                    iMainActivityView.setBackGround();
+                }
+                //设置温度显示界面的建议
                 iMainActivityView.GetTempLChar().setText(info.getWeather().get(0).getToday().getSuggestion().getDressing().getDetails(),1);
-                iMainActivityView.setText(info.getWeather().get(0).getNow().getText(),4);
+
+                //天气情况(晴朗/阴天)
+                iMainActivityView.setText(info.getWeather().get(0).getNow().getText(),MyView.WEATHER);
+
+                iMainActivityView.setText(info.getWeather().get(0).getNow().getWind_direction()+"风\n"+
+                        info.getWeather().get(0).getFuture().get(0).getWind(), MyView.WIND_DIRECT);
+
                 iMainActivityView.GetForcast().SetDate(info);
 
-                //iMainActivityView.Get
+                iMainActivityView.setText("相对湿度\n"+"    "+((info.getWeather().get(0).getNow().getHumidity()))+"%",MyView.HUMIDITY);
+
+                iMainActivityView.setText("空气指数"+info.getWeather().get(0).getNow().getAir_quality().getCity().getAqi()+" "+
+                        info.getWeather().get(0).getNow().getAir_quality().getCity().getQuality(),MyView.PM25);
+
+                iMainActivityView.GetQualityFragement().setDate(info);
+
+                iMainActivityView.setText("体感温度\n  "+"  "+info.getWeather().get(0).getNow().getFeels_like()+"°",MyView.AQI);
+
+
+
             }
 
             @Override
@@ -128,14 +151,17 @@ public class MainPresenter {
         });
     }
 
-
+    /**
+     * 得到city ID通过cityid查询城市的天气情况
+     * @param info
+     */
     public void GetCityId(final City_Info info){
 
         iMainModel.GetCityId(info.getDistrict().substring(0,2), new OnCityIdListener() {
             @Override
             public void Success(CityId cityinfo) {
                 String id=CityId(cityinfo,info.getCity().substring(0,2));
-                Log.i("HAHA",id+"11111");
+                //通过得到的cityid信息查询天气情况
                 GetJirenWeather(id);
 
             }
@@ -146,7 +172,7 @@ public class MainPresenter {
             }
         });
     }
-
+    //判断当前cityid,(有种情况：朝阳返回辽宁朝阳和北京朝阳，因此要筛选出想要的cityid)
     private String CityId(CityId cityinfo,String city){
       List<CityId.ResultsBean> resultbean= cityinfo.getResults();
         for(int i=0;i<resultbean.size();i++){
