@@ -74,4 +74,16 @@ public class City_Info {
 
     private String District;
     private String Street;
+
+    @Override
+    public String toString() {
+        return "City_Info{" +
+                "Longitude='" + Longitude + '\'' +
+                ", Latitude='" + Latitude + '\'' +
+                ", city='" + city + '\'' +
+                ", LocationDescribe='" + LocationDescribe + '\'' +
+                ", District='" + District + '\'' +
+                ", Street='" + Street + '\'' +
+                '}';
+    }
 }

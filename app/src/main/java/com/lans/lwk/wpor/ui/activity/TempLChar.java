@@ -51,7 +51,6 @@ public class TempLChar extends Fragment implements IFrageView{
         // Inflate the layout for this fragment
        View view=inflater.inflate(R.layout.fragment_fragment1, container, false);
         ButterKnife.bind(this,view);
-        Log.i("HAHA","onCreateView");
         return view;
     }
 
@@ -60,7 +59,6 @@ public class TempLChar extends Fragment implements IFrageView{
     @Override
     public void setDate( Forecast_WeatherInfo info) {
 
-        Log.i("HAHA","dad");
         CharConfig.initLineChart(lineChart,mPointValues,mAxisXValues,info.getResult().getHourly().getTemperature());//初始化
     }
 

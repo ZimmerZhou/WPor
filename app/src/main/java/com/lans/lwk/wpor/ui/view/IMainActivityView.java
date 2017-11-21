@@ -23,7 +23,7 @@ public interface IMainActivityView {
     void setText(final String text,MyView mode);
 
 
-    void showDialog();
+    void showDialog(String message);
     void hideDialog();
 
     //注销定位监听

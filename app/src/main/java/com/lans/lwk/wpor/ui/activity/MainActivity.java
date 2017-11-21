@@ -2,34 +2,25 @@ package com.lans.lwk.wpor.ui.activity;
 
 
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.lans.lwk.wpor.LocationService;
+
 import com.lans.lwk.wpor.R;
 
 import com.lans.lwk.wpor.configs.MyView;
-import com.lans.lwk.wpor.model.entity.Forecast_WeatherInfo;
 import com.lans.lwk.wpor.presenter.MainPresenter;
-import com.lans.lwk.wpor.retrofit.HttpMethods;
 import com.lans.lwk.wpor.ui.view.IMainActivityView;
 import com.lans.lwk.wpor.util.Utils;
 
@@ -38,8 +29,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.http.GET;
-import rx.Subscriber;
 
 public class MainActivity extends AppCompatActivity implements IMainActivityView,View.OnClickListener{
     private TextView LocationResult;
@@ -87,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
         ButterKnife.bind(this);
         getSupportActionBar().hide();
         initViews();
-        showDialog();
+        showDialog("获取信息中");
 
     }
 
@@ -95,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
     private void initViews(){
         dialog=new ProgressDialog(this);
         dialog.setTitle("提示");
-        dialog.setMessage("获取信息中");
         dialog.setCancelable(false);
 
       if(mainPresenter==null) mainPresenter=new MainPresenter(this);
@@ -217,7 +205,8 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
     }
 
     @Override
-    public void showDialog() {
+    public void showDialog(String message) {
+        dialog.setMessage(message);
         dialog.show();
     }
 

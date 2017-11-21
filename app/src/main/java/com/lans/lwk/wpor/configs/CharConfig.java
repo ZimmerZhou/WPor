@@ -108,7 +108,6 @@ public class CharConfig {
             }
 
         }
-        Log.i("HAHA",lis.toString());
         return lis;
     }
 

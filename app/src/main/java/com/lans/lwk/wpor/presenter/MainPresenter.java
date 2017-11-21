@@ -15,7 +15,6 @@ import com.lans.lwk.wpor.model.impl.OnCityIdListener;
 import com.lans.lwk.wpor.model.impl.OnForWeatherListener;
 import com.lans.lwk.wpor.model.impl.OnJirenWeatherListener;
 import com.lans.lwk.wpor.model.impl.OnLocationListener;
-import com.lans.lwk.wpor.retrofit.HttpMethods;
 import com.lans.lwk.wpor.ui.activity.Forc_Detail_Activity;
 import com.lans.lwk.wpor.ui.view.IMainActivityView;
 
@@ -25,10 +24,13 @@ import rx.Subscriber;
 
 /**
  * Created by Li on 2017/11/11.
+ *
  */
 
 public class MainPresenter {
+    //Mainactivity接口
     private IMainActivityView iMainActivityView;
+    //modele接口
     private IMainModel iMainModel;
 
     public MainPresenter(IMainActivityView iMainActivityView) {
@@ -36,27 +38,28 @@ public class MainPresenter {
         iMainModel=new MainModelImp();
     }
 
-    public void setLocation(){
-
-
-
-    }
     //为防止内存泄露在activity的onDestroy方法里面调用如下方法
     public void onDestroy() {
         iMainActivityView=null;
     }
 
+    /**
+     * 反注册位置监听器
+     */
     public void unregisterListener(){
         iMainModel.unregisterListener();
     }
 
+    /**
+     * 得到实时天气信息
+     */
     public void GetRealTimeWeatherInfo(){
                 iMainModel.getRealTimeWeatherInfo(new OnRealTimeWeathListener(){
                     @Override
                     public void Success(Real_Time_WeatherInfo weatherInfo) {
+                        //设置MainActivity温度内容
                         iMainActivityView.setText(((int)(weatherInfo.getResult().getTemperature()))+"",MyView.TEMPERATURE);
 
-                      //  iMainActivityView.setText(weatherInfo.getResult().getSkycon(),4);
                     }
 
                     @Override
@@ -64,14 +67,14 @@ public class MainPresenter {
 
                     }
                 });
-
-
     }
 
     public void GetLocation(){
         iMainModel.GetLocation(new OnLocationListener() {
             @Override
             public void Success(City_Info info) {
+                Log.i("HAHA",info.getCity()+" "+info.getDistrict()+"  city定位");
+                Log.i("HAHA",info.toString()+"  city55");
                 GetRealTimeWeatherInfo();
                 GetForcastWeatherInfo();
                 GetForcaseInfo(info);
@@ -84,7 +87,7 @@ public class MainPresenter {
 
             @Override
             public void failed(String text) {
-
+                iMainActivityView.showDialog(text);
             }
         });
 
@@ -157,12 +160,13 @@ public class MainPresenter {
      */
     public void GetCityId(final City_Info info){
 
-        iMainModel.GetCityId(info.getDistrict().substring(0,2), new OnCityIdListener() {
+        iMainModel.GetCityId(info.getLatitude()+":"+info.getLongitude(), new OnCityIdListener() {
             @Override
             public void Success(CityId cityinfo) {
-                String id=CityId(cityinfo,info.getCity().substring(0,2));
+                 Log.i("HAHA",cityinfo.getResults().get(0).getPath()+"  CITY");
+                 //  String id=CityId(cityinfo,info.getCity().substring(0,2));
                 //通过得到的cityid信息查询天气情况
-                GetJirenWeather(id);
+                GetJirenWeather(cityinfo.getResults().get(0).getId());
 
             }
 
@@ -171,16 +175,6 @@ public class MainPresenter {
 
             }
         });
-    }
-    //判断当前cityid,(有种情况：朝阳返回辽宁朝阳和北京朝阳，因此要筛选出想要的cityid)
-    private String CityId(CityId cityinfo,String city){
-      List<CityId.ResultsBean> resultbean= cityinfo.getResults();
-        for(int i=0;i<resultbean.size();i++){
-            if(resultbean.get(i).getPath().contains(city)){
-                return resultbean.get(i).getId();
-            }
-        }
-        return null;
     }
 
     public void GetForcastWeatherInfo(){
