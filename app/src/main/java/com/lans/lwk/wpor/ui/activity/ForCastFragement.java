@@ -1,37 +1,37 @@
 package com.lans.lwk.wpor.ui.activity;
 
+/**
+ * Created by Li on 2017/11/21.
+ */
+
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lans.lwk.wpor.R;
-import com.lans.lwk.wpor.model.entity.Forecast_WeatherInfo;
 import com.lans.lwk.wpor.model.entity.JiRenBean;
-import com.lans.lwk.wpor.model.entity.Text;
-import com.lans.lwk.wpor.model.impl.OnJiRendatChangeListener;
 import com.lans.lwk.wpor.ui.view.ForcastView;
-import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class Fragment2 extends Fragment implements ForcastView{
+
+
+
+
+public class ForCastFragement extends Fragment implements ForcastView {
     // TODO: Rename parameter arguments, choose names that match
-        @BindView(R.id.rec_view) RecyclerView recyclerView;
+    @BindView(R.id.rec_view)
+    RecyclerView recyclerView;
     static String [] timestring={"今天","今天","今天","今天"};
     static String [] weather={"晴朗","晴朗","晴朗","晴朗"};
     static String [] temp={"0","0","0","0"};
@@ -41,9 +41,6 @@ public class Fragment2 extends Fragment implements ForcastView{
     private static Context context;
 
 
-    public Fragment2() {
-        // Required empty public constructor
-    }
 
 
     @Override
@@ -84,18 +81,18 @@ public class Fragment2 extends Fragment implements ForcastView{
     @Override
     public void SetDate(JiRenBean info) {
         beaninfo=info;
-    for(int i=0;i<3;i++){
+        for(int i=0;i<3;i++){
 
-        timestring[i]=info.getWeather().get(0).getFuture().get(i).getDate().substring(5);
+            timestring[i]=info.getWeather().get(0).getFuture().get(i).getDate().substring(5);
 
-        weather[i]=info.getWeather().get(0).getFuture().get(i).getText().replace("/","转");
+            weather[i]=info.getWeather().get(0).getFuture().get(i).getText().replace("/","转");
 
 
-        temp[i]=info.getWeather().get(0).getFuture().get(i).getHigh()+"°/"+info.getWeather().get(0).getFuture().get(i).getLow()+"°";
+            temp[i]=info.getWeather().get(0).getFuture().get(i).getHigh()+"°/"+info.getWeather().get(0).getFuture().get(i).getLow()+"°";
 
-        cheng[i]=info.getWeather().get(0).getFuture().get(i).getWind();
-    }
-         adapter.notifyDataSetChanged();
+            cheng[i]=info.getWeather().get(0).getFuture().get(i).getWind();
+        }
+        adapter.notifyDataSetChanged();
     }
 
     protected  static class MyAdapter extends RecyclerView.Adapter{
@@ -127,10 +124,10 @@ public class Fragment2 extends Fragment implements ForcastView{
             TextView  wendu=ButterKnife.findById(holder.itemView,R.id.wendu);
 
 
-              time.setText(timestring[position]);
-              situ.setText(weather[position]);
-              wendu.setText(temp[position]);
-                chengdu.setText(cheng[position]);
+            time.setText(timestring[position]);
+            situ.setText(weather[position]);
+            wendu.setText(temp[position]);
+            chengdu.setText(cheng[position]);
 
 
 
@@ -143,13 +140,13 @@ public class Fragment2 extends Fragment implements ForcastView{
                     }
                 });
             }
-        if(position==3){
-            time.setText("");
-            situ.setText("");
-            fenge.setText("查看更多");
-            chengdu.setText("");
-            wendu.setText("");
-        }
+            if(position==3){
+                time.setText("");
+                situ.setText("");
+                fenge.setText("查看更多");
+                chengdu.setText("");
+                wendu.setText("");
+            }
         }
 
         @Override

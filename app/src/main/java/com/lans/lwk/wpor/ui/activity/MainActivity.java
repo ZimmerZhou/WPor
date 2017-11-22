@@ -5,36 +5,31 @@ package com.lans.lwk.wpor.ui.activity;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.lans.lwk.wpor.R;
-
 import com.lans.lwk.wpor.configs.MyView;
+import com.lans.lwk.wpor.model.entity.City_Info;
 import com.lans.lwk.wpor.presenter.MainPresenter;
 import com.lans.lwk.wpor.ui.view.IMainActivityView;
 import com.lans.lwk.wpor.util.Utils;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
+
 public class MainActivity extends AppCompatActivity implements IMainActivityView,View.OnClickListener{
-    private TextView LocationResult;
-    private Button startLocation;
+    //MainPresenter
     private MainPresenter mainPresenter;
+    //工具类，主要用于权限的请求
     private Utils utils;
+    //加载Dialog
     private ProgressDialog dialog;
 
     @BindView(R.id.relalayout) RelativeLayout relativeLayout;
@@ -54,21 +49,19 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
     @BindView(R.id.feng) TextView feng;
     @BindView(R.id.humidity) TextView humidity;
     @BindView(R.id.aqi) TextView aqi;
-
+    //温度折线显示fragement
     TempLChar tempLChar;
-    Fragment2 forcast;
+    //预报信息显示Fragement
+    ForCastFragement forcast;
+    //指数相关Fragement
     QualityFragement qualityFragement;
     private TextView tvs[];
     private List<Fragment> fragments=new ArrayList<>();
     private MyPagerAdapter pagerAdapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
-       // this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
-
-        //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//去掉信息栏
         super.onCreate(savedInstanceState);
 
 
@@ -77,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
         getSupportActionBar().hide();
         initViews();
         showDialog("获取信息中");
+
+
 
     }
 
@@ -90,9 +85,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
         if(utils==null)utils=new Utils(this);
 
 
-
+        //初始化Fragement
         fragments.add(tempLChar=new TempLChar());
-        fragments.add(forcast=new Fragment2());
+        fragments.add(forcast=new ForCastFragement());
         fragments.add(qualityFragement=new QualityFragement());
 
 
@@ -147,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
     }
 
     /***
-     * Stop location service
+     * 停止定位服务
      */
     @Override
     protected void onStop() {
@@ -163,8 +158,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
         super.onStart();
         //获得权限
         utils.getPersimmions();
-       // setLocation();
-       //getWeatherInfo();
+        //发起定位
         GetLocation();
 
 
@@ -176,18 +170,34 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
         super.onDestroy();
     }
 
+    /**
+     * 将info传给TempChar
+     * @param info
+     */
+    @Override
+    public void Temp_Request(City_Info info) {
+        GetTempLChar().RequestForcase(info);
+    }
 
+    /**
+     * 设置天气背景
+     */
     @Override
     public void setBackGround() {
         relativeLayout.setBackgroundResource(R.drawable.weather2);
     }
 
+    /**
+     * 根据不同的mode设置页面要显示的内容
+     * @param text
+     * @param mode
+     */
     @Override
     public void setText(String text,MyView mode) {
         switch (mode){
             case LOCATION:
                 location.setText(text); break;
-            case PM25:
+            case AQI:
                 aqilty.setText(text); break;
             case TEMPERATURE:
                 temp.setText(text); break;
@@ -197,49 +207,48 @@ public class MainActivity extends AppCompatActivity implements IMainActivityView
                 feng.setText(text); break;
             case HUMIDITY:
                 humidity.setText(text); break;
-            case AQI:
+            case FEELLIKE:
                 aqi.setText(text); break;
 
         }
 
     }
-
+    //显示加载Dialog
     @Override
     public void showDialog(String message) {
         dialog.setMessage(message);
         dialog.show();
     }
-
+    //隐藏D
     @Override
     public void hideDialog() {
         dialog.hide();
     }
-
+    //注销定位监听
     @Override
     public void unregisterListener() {
         mainPresenter.unregisterListener();
     }
 
-    @Override
-    public void getWeatherInfo() {
-
-    }
-
+    //返回TempLChar
     @Override
     public TempLChar GetTempLChar() {
         return tempLChar;
     }
-
+    //返回ForcastFragement
     @Override
-    public Fragment2 GetForcast() {
+    public ForCastFragement GetForcast() {
         return forcast;
     }
-
+    //返回QualityFragement
     @Override
     public QualityFragement GetQualityFragement() {
         return qualityFragement;
     }
 
+    /**
+     * 发起定位
+     */
     @Override
     public void GetLocation() {
         mainPresenter.GetLocation();

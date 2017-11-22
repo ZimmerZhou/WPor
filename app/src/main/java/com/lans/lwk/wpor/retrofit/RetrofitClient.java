@@ -9,6 +9,7 @@ import com.lans.lwk.wpor.model.entity.Forecast_WeatherInfo;
 import com.lans.lwk.wpor.model.entity.JiRenBean;
 import com.lans.lwk.wpor.model.entity.Real_Time_WeatherInfo;
 
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -20,11 +21,13 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 
-/**对 Retrofit进行简单封装，默认返回加载彩云URL
+/**对 Retrofit进行简单封装，默认返回加载彩云URL将其写为静态内部类，因此没有进行缓存
  * Created by Li on 2017/5/10.
  */
 
 public class RetrofitClient {
+    //将RetrofitClient进行缓存
+    static HashMap<String,RetrofitClient> hashMap=new HashMap<>();
     //彩云天气API
     private static final String CAIYUN_URL="https://api.caiyunapp.com/v2/8uupsJ1Zu4PurdDW/";
     //jirengu天气API
@@ -47,7 +50,7 @@ public class RetrofitClient {
      * 初始化一个默认的RetrofitClient
      */
     private static class SingletonHolder{
-        private static RetrofitClient INSTANCE=new RetrofitClient();
+        private static RetrofitClient CAIYUN=new RetrofitClient();
     }
 
     private RetrofitClient(){
@@ -83,18 +86,31 @@ public class RetrofitClient {
         api=retrofit.create(WeathRequest.class);
     }
 
+    /**
+     * 将RetrofitClient进行缓存
+     * @param mode
+     * @return
+     */
+    public static RetrofitClient GetCache(MyView mode){
+    if(hashMap.get(mode.name())!=null){
+            return hashMap.get(mode.name());
+    }else{
+      return  GetInstance(mode);
+    }
 
+}
 
-    public static RetrofitClient GetInstance(MyView mode){
+    private static RetrofitClient GetInstance(MyView mode){
 
         client=new RetrofitClient(mode);
-                return client;
+        hashMap.put(mode.name(),client);
+        return client;
 
 
     }
     //返回默认构造的RetrofitClient
-    public static RetrofitClient GetInstance(){
-        return SingletonHolder.INSTANCE;
+    public static RetrofitClient GetCache(){
+        return SingletonHolder.CAIYUN;
     }
 
     /**
@@ -107,14 +123,30 @@ public class RetrofitClient {
         api.query(Longitude, Latitude).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 
+    /**
+     * 得到未来预报天气信息
+     * @param Longitude
+     * @param Latitude
+     * @param subscriber
+     */
     public void Request_Forecast(String Longitude,String Latitude,Action1<Forecast_WeatherInfo> subscriber){
         api.Query_Forest(Longitude,Latitude).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 
+    /**
+     * 得到天气信息（信息全面）
+     * @param cityid
+     * @param subscriber
+     */
     public void RequestJiRen(String cityid,Action1<JiRenBean> subscriber){
         api.query_JiRen(cityid).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 
+    /**
+     * 得到城市ID
+     * @param location
+     * @param subscriber
+     */
     public void Request_BDW(String location,Action1<CityId> subscriber){
         api.query_CityId("iqcw8lb4lk6wah1l",location).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }

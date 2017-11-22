@@ -1,4 +1,4 @@
-package com.lans.lwk.wpor.model.impl;
+package com.lans.lwk.wpor.model.listener;
 
 import com.lans.lwk.wpor.model.entity.Forecast_WeatherInfo;
 

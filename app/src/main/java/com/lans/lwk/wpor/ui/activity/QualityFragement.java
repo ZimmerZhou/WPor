@@ -4,7 +4,6 @@ package com.lans.lwk.wpor.ui.activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +14,7 @@ import android.widget.TextView;
 
 import com.lans.lwk.wpor.R;
 import com.lans.lwk.wpor.model.entity.JiRenBean;
+import com.lans.lwk.wpor.model.entity.JiRenBean.WeatherBean.NowBean.AirQualityBean.CityBean;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,12 +33,6 @@ public class QualityFragement extends Fragment {
     @BindView(R.id.o3) TextView o3;
     static String[] values=new String[6];
     private MyAdapter adapter;
-    public QualityFragement() {
-        // Required empty public constructor
-    }
-
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,7 +61,7 @@ public class QualityFragement extends Fragment {
 
 
     public void setDate(JiRenBean info){
-        JiRenBean.WeatherBean.NowBean.AirQualityBean.CityBean bean=info.getWeather().get(0).getNow().getAir_quality().getCity();
+       CityBean bean=info.getWeather().get(0).getNow().getAir_quality().getCity();
         aqi.setText(bean.getAqi());
         pm25.setText(bean.getPm25());
        pm10.setText(bean.getPm10());

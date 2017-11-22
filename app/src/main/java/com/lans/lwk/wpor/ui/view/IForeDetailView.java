@@ -10,7 +10,7 @@ import com.lans.lwk.wpor.ui.activity.Forc_Detail_Activity;
  */
 
 public interface IForeDetailView {
-     void  setDate(JiRenBean info);
+    // void  setDate(JiRenBean info);
 
      Forc_Detail_Activity GetForActivity();
 

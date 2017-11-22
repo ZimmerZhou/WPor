@@ -1,4 +1,4 @@
-package com.lans.lwk.wpor;
+package com.lans.lwk.wpor.configs;
 
 import android.content.Context;
 

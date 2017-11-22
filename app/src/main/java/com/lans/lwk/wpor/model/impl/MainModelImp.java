@@ -2,16 +2,19 @@ package com.lans.lwk.wpor.model.impl;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
-import com.lans.lwk.wpor.LocationService;
+import com.lans.lwk.wpor.configs.LocationService;
 import com.lans.lwk.wpor.app.LocationApplication;
 import com.lans.lwk.wpor.configs.MyView;
-import com.lans.lwk.wpor.model.IMainModel;
-import com.lans.lwk.wpor.model.OnRealTimeWeathListener;
+import com.lans.lwk.wpor.model.Imodel.IMainModel;
+
 import com.lans.lwk.wpor.model.entity.CityId;
 import com.lans.lwk.wpor.model.entity.City_Info;
-import com.lans.lwk.wpor.model.entity.Forecast_WeatherInfo;
 import com.lans.lwk.wpor.model.entity.JiRenBean;
 import com.lans.lwk.wpor.model.entity.Real_Time_WeatherInfo;
+import com.lans.lwk.wpor.model.listener.OnCityIdListener;
+import com.lans.lwk.wpor.model.listener.OnJirenWeatherListener;
+import com.lans.lwk.wpor.model.listener.OnLocationListener;
+import com.lans.lwk.wpor.model.listener.OnRealTimeWeathListener;
 import com.lans.lwk.wpor.retrofit.RetrofitClient;
 
 import rx.functions.Action1;
@@ -106,7 +109,7 @@ public class MainModelImp implements IMainModel {
      */
     @Override
     public void getRealTimeWeatherInfo(final OnRealTimeWeathListener listener) {
-        RetrofitClient.GetInstance().Request(city_info.getLongitude(), city_info.getLatitude(),new Action1<Real_Time_WeatherInfo>(){
+        RetrofitClient.GetCache().Request(city_info.getLongitude(), city_info.getLatitude(),new Action1<Real_Time_WeatherInfo>(){
             @Override
             public void call(Real_Time_WeatherInfo weatherInfo) {
                 listener.Success(weatherInfo);
@@ -117,30 +120,13 @@ public class MainModelImp implements IMainModel {
     }
 
     /**
-     * 得到未来24小时预报信息
-     * @param Longitude
-     * @param Latitude
-     * @param listener
-     */
-    @Override
-    public void GetTempInfo(String Longitude,String Latitude,final OnForWeatherListener listener) {
-        RetrofitClient.GetInstance().Request_Forecast(Longitude,Latitude, new Action1<Forecast_WeatherInfo>() {
-
-            @Override
-            public void call(Forecast_WeatherInfo forecastWeatherInfo) {
-                listener.Success(forecastWeatherInfo);
-            }
-        });
-    }
-
-    /**
      *得到表示city的ID，通过此ID查询城市的相关天气信息
      * @param city  (Latitude:Longitude)
      * @param listener
      */
     @Override
     public void GetCityId(final String city, final OnCityIdListener listener) {
-        RetrofitClient.GetInstance(MyView.ZHIXIN).Request_BDW(city, new Action1<CityId>() {
+        RetrofitClient.GetCache(MyView.ZHIXIN).Request_BDW(city, new Action1<CityId>() {
 
             @Override
             public void call(CityId cityId) {
@@ -159,7 +145,7 @@ public class MainModelImp implements IMainModel {
      */
     @Override
     public void GetJirenWeather(String cityid, final OnJirenWeatherListener listener) {
-        RetrofitClient.GetInstance(MyView.JIRENGU).RequestJiRen(cityid, new Action1<JiRenBean>() {
+        RetrofitClient.GetCache(MyView.JIRENGU).RequestJiRen(cityid, new Action1<JiRenBean>() {
 
 
             @Override

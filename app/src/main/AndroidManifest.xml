@@ -38,7 +38,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.Forc_Detail_Activity"></activity>
+        <activity android:name=".ui.activity.Forc_Detail_Activity" />
+        <activity android:name=".ui.common.BaseActivity"></activity>
     </application>
 
 </manifest>
