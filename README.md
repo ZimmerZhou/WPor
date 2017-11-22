@@ -16,10 +16,10 @@
 图片加载方面使用了Picasso进行网络图片的加载。
 
 应用相关截图如下：
-![](https://github.com/815065046/Pictures/raw/master/Pictures/_1.png)
-![](https://github.com/815065046/Pictures/raw/master/Pictures/_2.png)
-![](https://github.com/815065046/Pictures/raw/master/Pictures/_3.png)
-![](https://github.com/815065046/Pictures/raw/master/Pictures/_4.png)
+<div align=center><img width="400"height="710"src="https://github.com/815065046/Pictures/raw/master/Pictures/_1.png"/></div>
+<div align=center><img width="400"height="710"src="https://github.com/815065046/Pictures/raw/master/Pictures/_2.png"/></div>
+<div align=center><img width="400"height="710"src="https://github.com/815065046/Pictures/raw/master/Pictures/_3.png"/></div>
+<div align=center><img width="400"height="710"src="https://github.com/815065046/Pictures/raw/master/Pictures/_4.png"/></div>
 
 
 
