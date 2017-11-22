@@ -5,7 +5,7 @@
 封装，使每一次的网络请求后可以被缓存起来，这样以后再使用就可以使用缓存的网络请求。
 
 主要使用的控件为RecyclerView,使用了它用来展示相关的天气信息等，如下所示。
-![](https://github.com/815065046/Pictures/raw/master/Pictures/_4.png)
+<div align=center><img width="400"height="710"src="https://github.com/815065046/Pictures/raw/master/Pictures/_4.png"/></div>
 
 本应用主要使用到的天气API有：
 彩云天气
